@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111a2a">
+  <meta name="description" content="一款关于重生、校园遗憾与命运选择的手机剧情游戏。">
+  <title>回到她转学前的30天</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23131b2c'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23f4bf75' stroke-width='4'/%3E%3Cpath d='M32 19v14l9 6M22 14l-7 2 3 6' fill='none' stroke='%23f4bf75' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    :root{color-scheme:dark;--ink:#f8f2e8;--muted:#bbc1ce;--line:rgba(255,255,255,.15);--panel:rgba(15,22,35,.82);--amber:#f1b967;--amber2:#ffd59a;--navy:#101827;--danger:#dc8e83}
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:#0d1421;color:var(--ink);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+    button{font:inherit}
+    body{min-height:100svh;overflow-x:hidden}
+    .scene{position:fixed;inset:0;background-image:linear-gradient(180deg,rgba(7,12,21,.04),rgba(7,12,21,.32) 52%,rgba(7,12,21,.92)),url("assets/cover.webp");background-position:center;background-size:cover;background-repeat:no-repeat;transition:filter .7s ease,transform 1.1s ease,opacity .28s ease;transform:scale(1.015)}
+    .scene::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(243,178,96,.13),transparent 36%),linear-gradient(90deg,rgba(8,12,19,.2),transparent 40%,rgba(8,12,19,.15))}
+    .app{position:relative;z-index:1;min-height:100svh;display:grid;place-items:center;padding:max(18px,env(safe-area-inset-top)) 16px max(22px,env(safe-area-inset-bottom))}
+    .phone{width:min(100%,520px);min-height:min(820px,calc(100svh - 36px));display:flex;flex-direction:column}
+    .glass{background:linear-gradient(180deg,rgba(15,23,38,.75),rgba(9,15,26,.91));border:1px solid var(--line);box-shadow:0 28px 80px rgba(0,0,0,.4);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:28px}
+    .start{min-height:inherit;padding:32px 26px 26px;display:flex;flex-direction:column;justify-content:flex-end;animation:rise .7s ease both;background:linear-gradient(180deg,rgba(10,16,28,.03) 15%,rgba(10,16,28,.45) 54%,rgba(9,15,26,.94) 78%)}
+    .eyebrow{font-size:.78rem;letter-spacing:.28em;color:var(--amber2);font-weight:700;margin-bottom:12px}
+    h1{font-family:"Songti SC","STSong",serif;font-size:clamp(2.3rem,10vw,4.2rem);font-weight:700;line-height:1.08;letter-spacing:.02em;margin:0;text-shadow:0 4px 28px rgba(0,0,0,.45)}
+    .lead{font-size:1rem;line-height:1.85;color:#e6e2dc;margin:22px 0 26px;max-width:28rem}
+    .quote{border-left:2px solid var(--amber);padding-left:14px;color:var(--amber2);margin:0 0 28px;font-family:"Songti SC","STSong",serif;font-size:1.05rem;line-height:1.75}
+    .primary,.choice,.ghost{border:0;cursor:pointer;touch-action:manipulation}
+    .primary{width:100%;min-height:56px;border-radius:17px;background:linear-gradient(135deg,#f8cf91,#e8a956);color:#211608;font-weight:800;letter-spacing:.08em;box-shadow:0 9px 26px rgba(225,155,66,.25);transition:transform .15s ease,filter .15s ease}
+    .primary:active,.choice:active{transform:scale(.985)}
+    .primary:focus-visible,.choice:focus-visible,.ghost:focus-visible{outline:3px solid rgba(255,213,154,.7);outline-offset:3px}
+    .game{min-height:inherit;display:flex;flex-direction:column;padding:16px 18px 18px;animation:fade .45s ease both}
+    .hud{padding:4px 3px 12px;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+    .hud-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .chapter{font-size:.79rem;color:var(--amber2);letter-spacing:.12em;font-weight:700}
+    .counter{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.8rem}
+    .progress{height:3px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:14px}
+    .progress span{display:block;height:100%;width:5%;background:linear-gradient(90deg,var(--amber),#ffe4b7);transition:width .45s ease}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+    .stat{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 7px;text-align:center}
+    .stat b{display:block;font-size:.94rem;color:#fff;font-variant-numeric:tabular-nums;margin-top:2px}
+    .stat small{font-size:.72rem;color:var(--muted)}
+    .story{margin-top:auto;display:flex;flex-direction:column;padding:22px 20px 18px;min-height:390px;max-height:66svh;overflow-y:auto;overscroll-behavior:contain;background:linear-gradient(180deg,rgba(14,21,34,.48),rgba(8,14,24,.62));border-color:rgba(255,255,255,.2);box-shadow:0 18px 52px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(11px) saturate(1.08);-webkit-backdrop-filter:blur(11px) saturate(1.08)}
+    .time{font-size:.76rem;color:var(--amber2);letter-spacing:.08em;margin-bottom:12px}
+    h2{font-family:"Songti SC","STSong",serif;font-size:1.55rem;line-height:1.35;margin:0 0 17px}
+    .copy{font-size:1rem;line-height:1.9;color:#f4f1ec;white-space:pre-line;margin:0 0 22px;animation:textIn .42s ease both;text-shadow:0 1px 8px rgba(0,0,0,.72)}
+    .beat-dots{display:flex;gap:6px;margin:-5px 0 15px}
+    .beat-dots i{width:18px;height:3px;border-radius:9px;background:rgba(255,255,255,.16)}
+    .beat-dots i.on{background:var(--amber)}
+    .rewind{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.16);background:rgba(9,15,25,.52);color:#e7e1d9;border-radius:99px;padding:7px 11px;cursor:pointer;font-size:.8rem;backdrop-filter:blur(10px)}
+    .rewind[disabled]{opacity:.35;cursor:not-allowed}
+    .continue{margin-top:auto}
+    .choices{margin-top:auto;display:grid;gap:10px}
+    .choice{position:relative;text-align:left;padding:14px 45px 14px 15px;min-height:54px;border-radius:15px;color:var(--ink);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);line-height:1.55;transition:background .18s ease,border-color .18s ease,transform .15s ease;animation:rise .4s ease both}
+    .choice:nth-child(2){animation-delay:.05s}.choice:nth-child(3){animation-delay:.1s}
+    .choice:hover{background:rgba(255,190,105,.11);border-color:rgba(255,205,137,.48)}
+    .choice:disabled{opacity:.42;cursor:not-allowed;filter:saturate(.4)}
+    .choice:disabled::after{content:"锁";font-size:.74rem;color:var(--muted)}
+    .choice::after{content:"›";position:absolute;right:16px;top:50%;transform:translateY(-52%);font-size:1.55rem;color:var(--amber)}
+    .effect{position:fixed;left:50%;top:max(16px,env(safe-area-inset-top));transform:translateX(-50%);z-index:10;max-width:calc(100% - 32px);padding:11px 16px;border-radius:99px;background:rgba(11,18,30,.92);border:1px solid rgba(255,206,139,.42);box-shadow:0 8px 30px rgba(0,0,0,.35);color:var(--amber2);font-size:.84rem;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;white-space:nowrap}
+    .effect.show{opacity:1;transform:translate(-50%,8px)}
+    .ending{min-height:inherit;padding:30px 24px 24px;display:flex;flex-direction:column;justify-content:flex-end;animation:fade .7s ease both}
+    .ending-mark{font-size:.78rem;letter-spacing:.22em;color:var(--amber2);font-weight:700;margin-bottom:10px}
+    .ending h2{font-size:2.4rem;margin-bottom:18px}
+    .ending .copy{color:#f0ece6}
+    .result-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:4px 0 22px}
+    .result-stats div{text-align:center;padding:10px 4px;background:rgba(255,255,255,.06);border-radius:12px;color:var(--muted);font-size:.72rem}
+    .result-stats b{display:block;color:#fff;font-size:1rem;margin-top:3px}
+    .ghost{margin-top:11px;width:100%;min-height:48px;background:transparent;color:var(--muted);border-radius:14px}
+    .hidden{display:none!important}
+    @keyframes fade{from{opacity:0}to{opacity:1}}
+    @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    @keyframes textIn{from{opacity:.2;transform:translateY(6px)}to{opacity:1;transform:none}}
+    @media(max-width:560px){.app{padding:0}.phone{width:100%;min-height:100svh}.glass{border-radius:0;border-left:0;border-right:0}.start,.game,.ending{min-height:100svh}.story{border-radius:24px 24px 0 0;min-height:45svh;max-height:65svh;margin-left:-12px;margin-right:-12px;margin-bottom:-12px;padding:20px 20px max(18px,env(safe-area-inset-bottom))}.game{padding:74px 12px 12px}.stats{gap:5px}.stat{padding:7px 4px}.copy{font-size:1rem}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true"></div>
+  <main class="app">
+    <div class="phone">
+      <section class="start glass" id="startScreen">
+        <div class="eyebrow">一场迟到了十年的重逢</div>
+        <h1>回到她转学前的30天</h1>
+        <p class="lead">前世，高考前的最后一个月，她突然转学，从此杳无音讯。多年后你才知道，她离开前最后拨出的电话，是打给你的。</p>
+        <p class="quote">“如果那天我接了电话，一切会不会不一样？”</p>
+        <button class="primary" id="startButton">回到那一天</button>
+      </section>
+
+      <section class="game hidden" id="gameScreen">
+        <header class="hud">
+          <div class="hud-top"><span class="chapter" id="chapter">第一章 · 重逢</span><span class="counter" id="counter">01 / 20</span></div>
+          <div class="progress"><span id="progressBar"></span></div>
+          <div class="stats" aria-label="当前属性">
+            <div class="stat"><small>学业</small><b id="study">40</b></div>
+            <div class="stat"><small>勇气</small><b id="courage">30</b></div>
+            <div class="stat"><small>羁绊</small><b id="bond">20</b></div>
+            <div class="stat"><small>线索</small><b id="clue">0</b></div>
+          </div>
+          <div style="margin-top:9px"><button class="rewind" id="backButton" disabled aria-label="回溯上一步">↶ 回溯上一步</button></div>
+        </header>
+        <article class="story glass">
+          <div class="time" id="time"></div>
+          <h2 id="eventTitle"></h2>
+          <div class="beat-dots" id="beatDots" aria-hidden="true"></div>
+          <p class="copy" id="eventText"></p>
+          <div class="choices" id="choices"></div>
+          <button class="primary continue hidden" id="continueButton">继续</button>
+        </article>
+      </section>
+
+      <section class="ending glass hidden" id="endingScreen">
+        <div class="ending-mark">命运结局</div>
+        <h2 id="endingTitle"></h2>
+        <p class="copy" id="endingText"></p>
+        <div class="result-stats" id="resultStats"></div>
+        <button class="primary" id="restartButton">再重生一次</button>
+        <button class="ghost" id="homeButton">返回标题</button>
+      </section>
+    </div>
+  </main>
+  <div class="effect" id="effect" role="status" aria-live="polite"></div>
+
+  <script>
+    const events = [
+      {chapter:"第一章 · 重逢",time:"第30天 · 07:42",title:"她坐在你身旁",image:"assets/event-01.png",beats:[
+        "蝉声从半开的窗户涌进来。你猛地抬头，鼻腔里不是医院消毒水的气味，而是粉笔灰、旧木桌和夏天晒热的校服。黑板右上角写着距离高考还有二百七十三天。\n\n你低头看向自己的手——没有输液针孔，也没有那枚戴了十年的旧戒指。",
+        "班主任推开教室门，身后跟着一个抱着课本的女生。她的马尾束得很低，额前碎发被晨风轻轻吹动。\n\n『新学期重新排座。林晚，你就坐窗边那个空位。』\n\n这个名字像一颗石子，砸穿了十年的沉默。",
+        "她走到你桌旁，校服袖口擦过堆高的习题册。你记得这一天，也记得三十天后她空掉的座位。\n\n林晚看着你，礼貌又疏离地问：『同学，这里有人吗？』\n\n前世的你只摇了摇头。这一次，你必须开口。"
+      ],choices:[
+        {text:"替她拉开椅子：『我一直在等你。』",e:{bond:8,courage:3},flag:"warmWelcome"},
+        {text:"压住震惊，只点点头",e:{study:2,bond:3}},
+        {text:"立刻问她是不是要转学",e:{clue:4,bond:-4},flag:"rushed"}
+      ]},
+      {chapter:"第一章 · 重逢",time:"第29天 · 午休",title:"抽屉里的纸角",image:"assets/event-02.png",beats:[
+        "午休铃响后，教室很快空了。林晚抱起全班作业往办公室走，临出门前还回头确认了一眼自己的座位。那个细小的动作，让你无法移开视线。",
+        "风从窗缝钻进来，她抽屉里的试卷轻轻翻动。一张对折的表格滑出半截，纸角压着鲜红的学校公章。\n\n你认得它。前世清理空座位时，你也看见过同样的纸——转学申请。",
+        "走廊传来渐近的脚步声。只要伸手，你就能提前知道她准备去哪里；可十年前的你，从来没有得到过她允许你走进秘密的机会。\n\n你的指尖停在离纸张不到两厘米的地方。"
+      ],choices:[
+        {text:"不偷看，等她主动告诉你",e:{bond:6,courage:1},flag:"respected"},
+        {text:"快速记下申请日期",e:{clue:8,bond:-2}},
+        {text:"把纸推回去，当作没看见",e:{study:2}}
+      ]},
+      {chapter:"第一章 · 重逢",time:"第28天 · 数学课",title:"空白的答题卡",image:"assets/event-03.png",beats:[
+        "第三节是数学。老师把一道圆锥曲线写满半块黑板，粉笔划过板面，发出令人牙酸的轻响。\n\n林晚的练习册却一片空白。她盯着窗外那棵梧桐，像在计算一个与你们都无关的倒计时。",
+        "『林晚，你上来做。』\n\n全班的目光同时转向她。她站起身时膝盖碰到桌沿，发出一声闷响。你看见她握住粉笔的手微微发抖——这不是不会，而是一整夜都没有睡。",
+        "老师开始不耐烦地敲讲台。你在草稿纸上迅速写出三个关键步骤；与此同时，举手替她回答也许能更快结束这场难堪。\n\n林晚背对全班，白色粉笔停在黑板前。"
+      ],choices:[
+        {text:"在草稿纸写下关键步骤递给她",e:{study:5,bond:6}},
+        {text:"主动举手替她回答",e:{study:7,courage:4,bond:2}},
+        {text:"课后问她是不是没有睡好",e:{bond:4,clue:3}}
+      ]},
+      {chapter:"第一章 · 重逢",time:"第27天 · 放学",title:"没有吃完的面包",image:"assets/event-04.png",beats:[
+        "放学后值日，你在垃圾桶最上面看见一个透明面包袋。面包只缺了很小的一角，包装日期却是三天前。\n\n林晚正背对你整理书包，动作慢得像是在等教室里的其他人先离开。",
+        "你忽然想起前世的细节：她那段时间总说食堂太挤，午休却一个人留在教室；运动会那天，她跑完八百米后脸色惨白。\n\n当年你以为她只是不合群。现在才明白，她是在省下每一块钱。",
+        "『你还不走吗？』她察觉到你的目光，迅速把没有拉好的书包合上。里面露出一叠缴费通知。\n\n同情会刺伤她的自尊，但假装没看见，也许会让她继续饿下去。"
+      ],choices:[
+        {text:"说自己买多了，把另一份推给她",e:{bond:7}},
+        {text:"直说你发现她最近缺钱",e:{clue:5,courage:3,bond:-2}},
+        {text:"邀请她一起去食堂复习",e:{study:4,bond:5}}
+      ]},
+      {chapter:"第一章 · 重逢",time:"第26天 · 17:50",title:"走廊尽头的电话",image:"assets/event-05.png",beats:[
+        "傍晚五点五十分，你在楼梯间听见压低的说话声。林晚站在下一层平台，手里握着一部屏幕裂开的旧手机。\n\n『妈，再等我一个月……至少让我参加完这次模拟考。』",
+        "电话那边的女人声音疲惫而急促：『车票已经买了。你爸那些人找到学校怎么办？我们不能再拖。』\n\n林晚没有反驳，只把额头抵在冰冷的墙面。窗外的夕阳把她的影子拉得很长。",
+        "脚下的感应灯忽然熄灭。黑暗里，你听见她极轻地吸了一下鼻子，然后若无其事地说：『知道了。』\n\n再往前一步，她就会发现你听见了全部；退回走廊，你仍可以给她保留体面。"
+      ],choices:[
+        {text:"先离开，稍后装作偶遇陪她回家",e:{bond:6,clue:3},flag:"gentle"},
+        {text:"走过去告诉她：『你不用一个人扛。』",e:{courage:7,bond:7},flag:"standBy"},
+        {text:"记下电话里提到的“南站”",e:{clue:9,bond:-1}}
+      ]},
+      {chapter:"第二章 · 靠近",time:"第24天 · 雨夜",title:"只有一把伞",image:"assets/event-06.png",beats:[
+        "晚自习结束时，暴雨正好压过操场。排水沟很快漫出来，校门外的路灯在积水里碎成一片金色。\n\n同学们陆续被家长接走，林晚却一直站在门厅最里面。",
+        "她每隔几分钟就看一眼那部旧手机，屏幕始终没有亮。你知道不会有人来——前世的这场雨后，她发了三天高烧，却没有请假。\n\n你撑开伞，雨声立刻在伞面上密集地炸开。",
+        "『我坐公交，很快的。』她下意识拒绝。\n\n末班车站在两条街外，你手里只有一把不算大的伞。若是并肩走，任何人都看得出你在靠近她；若把伞留下，她又会独自消失在雨里。"
+      ],choices:[
+        {text:"把伞给她，自己淋雨回去",e:{bond:8,courage:2}},
+        {text:"并肩走到公交站",e:{bond:7,clue:2},flag:"sharedUmbrella"},
+        {text:"留下陪她做完一套卷子再走",e:{study:7,bond:4}}
+      ]},
+      {chapter:"第二章 · 靠近",time:"第22天 · 班主任办公室",title:"被压住的申请表",image:"assets/event-07.png",beats:[
+        "你抱着作业走进办公室时，班主任正准备锁抽屉。那张转学申请被压在文件最下面，监护人签名已经齐全，只差学校最后盖章。\n\n『老师，她一定要走吗？』",
+        "班主任沉默片刻，把眼镜摘下来擦了擦。『家里的决定，学校很难干涉。她母亲说得很急，好像还牵涉债务。』\n\n他说学校有困难补助，但必须由学生本人申请，还要监护人配合。",
+        "申请截止就在三天后。直接拖住转学表，只能换来很短的时间；找到合法的帮助，才可能让她真正留下。\n\n门外忽然传来脚步声，你必须在林晚出现前作出决定。"
+      ],choices:[
+        {text:"询问学校是否能提供困难补助",e:{clue:8,courage:5},flag:"aidInfo"},
+        {text:"请求老师暂时不要批准",e:{courage:7,bond:2}},
+        {text:"默默记住监护人签字的日期",e:{clue:7,study:2}}
+      ]},
+      {chapter:"第二章 · 靠近",time:"第21天 · 体育课",title:"流言从看台传来",image:"assets/event-08.png",beats:[
+        "体育课自由活动时，几个男生在看台下议论：林晚父亲借了很多钱，催债的人已经去过她家。有人故意把『逃债』两个字说得很响。\n\n笑声顺着空旷操场传到最高一排。",
+        "林晚低头系鞋带，系好又解开，仿佛只要动作不停，就可以假装没有听见。她耳尖却一点点变红。\n\n前世的你就站在同一个位置，选择了沉默，因为你怕自己也成为被议论的人。",
+        "你知道公开反驳会让流言暂时停下，也可能把所有目光引向她；坐到她身边无需解释，却无法找出是谁掌握了林家的消息。\n\n哨声响起前，你朝看台迈出一步。"
+      ],choices:[
+        {text:"当众制止流言",e:{courage:9,bond:6},flag:"defended"},
+        {text:"坐到她身边，什么也不问",e:{bond:7}},
+        {text:"追问流言最初来自谁",e:{clue:8,bond:-1}}
+      ]},
+      {chapter:"第二章 · 靠近",time:"第19天 · 图书馆",title:"写在书页后的地址",image:"assets/event-09.png",beats:[
+        "图书馆闭馆前，林晚把自己的错题本推给你。『最后一页那道题，我总觉得答案不对。』\n\n你翻到书末，一张折得发白的收据从夹页滑到桌下。",
+        "城西典当行。物品栏只写着『旧相机一台』，赎回期限恰好是她转学的前一天。收据背面还有一串被反复描过的地址。\n\n林晚弯腰去捡，你比她先一步按住了纸角。",
+        "她的目光落在你的手上，脸色瞬间变白。『那不是我的。』\n\n这是第一次，线索主动落到你面前；也是第一次，你必须决定查明真相是否比尊重她的沉默更重要。"
+      ],choices:[
+        {text:"拍下地址，再把收据原样放回",e:{clue:10}},
+        {text:"把收据交还，等她解释",e:{bond:8,clue:5},flag:"receiptTalk"},
+        {text:"告诉她你愿意陪她去",e:{courage:6,bond:7,clue:4}}
+      ]},
+      {chapter:"第二章 · 靠近",time:"第18天 · 天台",title:"那句没有说完的话",image:"assets/event-10.png",beats:[
+        "午后的天台没有别人。林晚靠着护栏，把喝空的汽水罐在掌心里慢慢转动。远处传来操场广播，近得像另一个世界。\n\n『你最近为什么总帮我？』她没有看你。",
+        "你想说因为我已经失去过你一次，可那句话在喉咙里停住了。重生听起来像一个拙劣的谎言。\n\n她忽然笑了一下：『如果有一天我消失了，你会记得我吗？』",
+        "风吹乱她的碎发。你想起十年后无数个夜晚：你一次次点开那个早已停用的号码，却从未敢按下拨号。\n\n这一次，你能给她的不能只是一句安慰，而是一份必须兑现的承诺。"
+      ],choices:[
+        {text:"『我不会让你一个人消失。』",e:{courage:7,bond:9},flag:"promise"},
+        {text:"『无论你去哪，我都会接你的电话。』",e:{bond:8,clue:2},flag:"callPromise"},
+        {text:"用玩笑掩饰眼泪",e:{bond:2,study:2}}
+      ]},
+      {chapter:"第三章 · 真相",time:"第15天 · 模拟考",title:"两张未来的车票",image:"assets/event-11.png",beats:[
+        "模拟考的准考证和典当行地址并排放在桌上。班主任说，这次成绩会决定市级保送推荐；而城西那家店明天就要停业装修，错过今天，收据背后的线索可能永远断掉。",
+        "考试开始前十分钟，林晚把两支削好的铅笔放到你桌上。『你最近总是走神。别因为我的事，把自己的以后弄丢了。』\n\n她不知道，你前世所谓的以后，正是由没能追出去的这一天组成的。",
+        "广播开始宣读考场纪律。去典当行需要穿过半座城，留下考试则可能保住你本来的人生。\n\n你忽然明白，重生并没有给你无限时间，它只是让同一道选择再次来到面前。"
+      ],choices:[
+        {text:"先完成考试，再骑车赶去典当行",e:{study:9,courage:5,clue:5}},
+        {text:"放弃考试，直接去典当行",e:{study:-8,courage:8,clue:11},flag:"choseHer"},
+        {text:"请可信的同学代为打听",e:{study:6,clue:6,bond:1}}
+      ]},
+      {chapter:"第三章 · 真相",time:"第14天 · 城西",title:"被典当的旧相机",image:"assets/event-12.png",beats:[
+        "典当行藏在城西旧街最深处，卷帘门只开了一半。老板听见林晚父亲的名字，先是警惕，随后从柜台下取出一只落满灰的相机包。",
+        "『这是他妻子的东西。本来只欠几万，后来为了翻本又借了新的。』老板翻出登记簿，指出其中一笔所谓投资公司的转账，收款账户却属于个人。\n\n这不像普通投资失败，更像一场设计好的骗局。",
+        "相机里也许还留着证据，但赎金远超你们能拿出的数目。登记簿上的紧急联系人、债务延期规则，以及相机本身，你只能先抓住其中一条线。"
+      ],choices:[
+        {text:"询问债务是否合法、能否延期",e:{clue:10,study:3},flag:"debtTruth"},
+        {text:"凑钱想先赎回相机",e:{bond:3,courage:3}},
+        {text:"找到收据上的紧急联系人",e:{clue:8,courage:2}}
+      ]},
+      {chapter:"第三章 · 真相",time:"第12天 · 校门口",title:"第一次见到她母亲",image:"assets/event-13.png",beats:[
+        "放学时，一个穿灰色外套的女人站在校门对面。林晚看见她，脚步明显慢了下来。那是她母亲，比你记忆中的照片消瘦许多，手里攥着两张去往南方的车票。",
+        "她把你叫到一旁，声音压得很低：『阿姨知道你是好心。但那些人已经找到家里，她爸又不肯报警。离开是最安全的办法。你别再给她留下来的希望。』",
+        "她不是不在意女儿，而是已经被恐惧逼得只看得见逃走这一条路。空泛地保证会显得幼稚；学校补助、债务证据和一个能让大人相信的计划，才可能改变她的决定。"
+      ],choices:[
+        {text:"把学校补助与延期方案交给她",e:{study:4,courage:6,clue:5},need:"aidInfo",flag:"motherPlan"},
+        {text:"保证自己会陪林晚面对一切",e:{courage:8,bond:5}},
+        {text:"先听完她没有说出口的担忧",e:{bond:6,clue:7},flag:"heardMother"}
+      ]},
+      {chapter:"第三章 · 真相",time:"第10天 · 傍晚",title:"真相终于被说出",image:"assets/event-14.png",beats:[
+        "夕阳把空教室染成暗红色。林晚终于从书包夹层取出那两张车票，出发日期就在十天后。她用指腹反复摩挲票角，像是在确认这件事无法改变。",
+        "『我妈每天只睡三四个小时。我爸把能借的人都借遍了。只要我还在这里，他们就不会停。』她说得很平静，眼泪却落在车票上，晕开一小块墨迹。\n\n『我不能再拖累任何人。』",
+        "你终于听懂她前世为什么不告而别。她不是不相信你，而是从未认为自己有资格请求谁留下。\n\n你可以展示自己查到的一切，也可以先问一个从没人问过她的问题：她自己究竟想不想走。"
+      ],choices:[
+        {text:"告诉她，你已经知道全部真相",e:{bond:8,clue:5,courage:3},flag:"truthShared"},
+        {text:"把选择权交还给她：『你想留下吗？』",e:{bond:10,courage:5},flag:"herChoice"},
+        {text:"劝她先服从家人的安排",e:{study:3,bond:-7}}
+      ]},
+      {chapter:"第三章 · 真相",time:"第9天 · 家长会",title:"门外的争吵",image:"assets/event-15.png",beats:[
+        "家长会还没结束，走廊里突然传来争吵。一个眼窝深陷的男人把转学申请拍在班主任桌上：『今天必须盖章，她不能再留在这里！』\n\n林晚站在门外，脸上没有惊讶，只有疲惫。",
+        "她母亲追上来阻止，两个人很快互相指责。父亲坚称再给他一次机会就能把钱赚回来，却不肯解释催债短信和典当相机的事。\n\n你从他的愤怒里看见的不是凶狠，而是一个不敢承认自己被骗的人。",
+        "挡在林晚面前只能阻止今晚；拿出证据可能彻底击碎她父亲最后的自尊；让老师和双方坐下来谈，则需要所有人暂时放下情绪。\n\n林晚隔着玻璃看向你，等待你先做出那个成熟的选择。"
+      ],choices:[
+        {text:"请老师与双方坐下来谈解决方案",e:{study:6,courage:7,clue:3},flag:"meeting"},
+        {text:"挡在林晚面前，拒绝让他带走她",e:{courage:10,bond:6}},
+        {text:"拿出你查到的债务问题",e:{clue:9,courage:6},need:"debtTruth",flag:"evidence"}
+      ]},
+      {chapter:"第四章 · 最后七天",time:"第7天 · 清晨",title:"倒计时开始",image:"assets/event-16.png",beats:[
+        "班主任争取到七天缓冲，转学申请暂时没有盖章。清晨的教室还没人，林晚第一次比你更早到。她擦掉黑板角落的倒计时，又重新写了一个数字：7。",
+        "『我以前从来没想过高考以后。』她摊开志愿手册，指尖在两座城市之间停留，『如果我真的能留下……我们会去同一座城市吗？』\n\n这不是告白，更像一个刚刚敢想象未来的人，小心翼翼地向你确认未来是否存在。",
+        "你们仍有没解决的债务、摇摆的家长和逼近的考试。许诺很容易，把七天拆成真正可执行的计划却更重要。\n\n窗外第一缕阳光落到她重新写下的数字上。"
+      ],choices:[
+        {text:"和她制定最后七天的复习计划",e:{study:9,bond:5},flag:"futurePlan"},
+        {text:"坦白自己害怕再次失去她",e:{courage:6,bond:9}},
+        {text:"先解决转学，不许她想别的",e:{clue:4,bond:-3}}
+      ]},
+      {chapter:"第四章 · 最后七天",time:"第5天 · 20:16",title:"陌生号码",image:"assets/event-17.png",beats:[
+        "晚自习下课，你的手机在桌肚里震了一下。陌生号码只发来一张照片：你和林晚从图书馆出来的背影。下面跟着一句话——别再插手林家的事。",
+        "教室里还有翻书声，走廊上值班老师刚刚经过。你本能地想删除短信，不让林晚看见；可前世的你正是把每一次不安都解释成『别多事』，才一步步错过了求救的信号。",
+        "证据应该交给可靠的大人，但你也害怕事情公开后让林晚承受更多议论。独自拨回号码或许能套出信息，也可能把自己暴露给对方。\n\n屏幕又亮了一次：同样的警告，后面多了一个句号。"
+      ],choices:[
+        {text:"保存证据并告诉老师与家长",e:{study:4,courage:8,clue:8},flag:"safeEvidence"},
+        {text:"独自拨回那个号码",e:{courage:10,clue:4}},
+        {text:"删除短信，不让林晚担心",e:{bond:3,clue:-4}}
+      ]},
+      {chapter:"第四章 · 最后七天",time:"第3天 · 黄昏",title:"两个人的约定",image:"assets/event-18.png",beats:[
+        "黄昏时，林晚把你叫上天台。她从校服口袋里取出一枚用透明胶带包好的存储卡：『我爸典当相机前，我把它拿出来了。一直不敢看。』",
+        "你们在旧读卡器里找到几段录像。镜头记录了所谓投资人如何保证稳赚、如何催促追加转账；最后一段却是林晚对着镜头练习告别。\n\n『如果有人看到这个，我应该已经离开了。』画面里的她努力笑着。",
+        "现实中的林晚伸手想关掉视频，指尖停在半空。证据足以让大人报警，但这段私人录像也装着她最脆弱的时刻。\n\n你必须让她知道：被看见不等于被审判。"
+      ],choices:[
+        {text:"先备份证据，再陪她看完录像",e:{clue:10,bond:8,study:2},flag:"memoryCard"},
+        {text:"立刻把证据交给老师",e:{clue:8,courage:5}},
+        {text:"答应替她保管，不打开录像",e:{bond:7,clue:3}}
+      ]},
+      {chapter:"第五章 · 命运之夜",time:"第1天 · 21:37",title:"那通电话再次响起",image:"assets/event-19.png",beats:[
+        "夜里九点三十七分，书桌上的手机突然亮起。来电显示只有两个字：林晚。\n\n你记得这个时间，精确到分钟。前世的你正在洗澡，出来时屏幕上只留下一个未接来电。",
+        "十年后，你曾无数次想象电话那边会说什么。是求救，是告别，还是一句普通的『明天见』？没有答案的那通电话，最终变成你人生里最长的一段回声。",
+        "铃声在安静的房间里响到第三遍。你的手在颤抖，拇指停在接听键上。与此同时，你想起她母亲车票上的目的地、收据背后的地址，还有她说过的南站。\n\n这一次，电话就在你手里。"
+      ],choices:[
+        {text:"立刻接听：『林晚，我在。』",e:{courage:9,bond:9},flag:"answered"},
+        {text:"一边接听，一边赶往南站",e:{courage:10,clue:5},flag:"station"},
+        {text:"先联系老师，确认安全后再接",e:{study:5,courage:3,bond:-5}}
+      ]},
+      {chapter:"第五章 · 命运之夜",time:"第0天 · 22:08",title:"最后一次选择",image:"assets/event-20.png",beats:[
+        "你赶到南站时，末班车正在检票。广播声、行李轮滚动声和奔跑的脚步混在一起。林晚站在闸机另一侧，母亲紧紧牵着她，像是只要松手，过去一个月积攒的勇气就会散掉。",
+        "老师已经联系警方核实存储卡里的证据，学校也同意暂缓转学。可这些并不能替林晚决定是否留下。离开可能更安全，留下意味着直面残局——无论哪一种，都应该由她自己选择。",
+        "她隔着人群看向你。前世的你总以为拯救一个人就是把她拉回自己身边；直到此刻你才明白，真正的拯救是把被恐惧夺走的选择权还给她。\n\n检票员开始催促。你向她伸出手，却没有替她迈出最后一步。"
+      ],choices:[
+        {text:"把所有方案交给她：『这次，由你决定。』",e:{bond:10,courage:6,study:3},flag:"freeChoice"},
+        {text:"冲过检票口，拉住她的手",e:{courage:10,bond:5}},
+        {text:"不阻止离开，只递上写有联系方式的信",e:{bond:7,study:2},flag:"letter"}
+      ]}
+    ];
+
+    const initialState = () => ({study:40,courage:30,bond:20,clue:0,flags:new Set(),index:0,beat:0,history:[]});
+    let state = initialState();
+    const $ = id => document.getElementById(id);
+    const els = {start:$("startScreen"),game:$("gameScreen"),ending:$("endingScreen"),chapter:$("chapter"),counter:$("counter"),progress:$("progressBar"),study:$("study"),courage:$("courage"),bond:$("bond"),clue:$("clue"),time:$("time"),title:$("eventTitle"),text:$("eventText"),choices:$("choices"),effect:$("effect"),dots:$("beatDots"),next:$("continueButton"),back:$("backButton"),scene:document.querySelector(".scene"),story:document.querySelector(".story")};
+
+    function clamp(n){return Math.max(0,Math.min(100,n));}
+    function show(screen){[els.start,els.game,els.ending].forEach(x=>x.classList.add("hidden"));screen.classList.remove("hidden");}
+    function setScene(path){els.scene.style.backgroundImage=`linear-gradient(180deg,rgba(7,12,21,.04),rgba(7,12,21,.32) 52%,rgba(7,12,21,.92)),url("${path}")`;}
+    function startGame(){state=initialState();els.scene.style.filter="";show(els.game);render();}
+    function effectText(e){const labels={study:"学业",courage:"勇气",bond:"羁绊",clue:"线索"};return Object.entries(e).map(([k,v])=>`${labels[k]} ${v>0?"+":""}${v}`).join(" · ");}
+    function toast(text){els.effect.textContent=text;els.effect.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>els.effect.classList.remove("show"),1200);}
+    function render(){
+      const ev=events[state.index];
+      els.chapter.textContent=ev.chapter;els.counter.textContent=`${String(state.index+1).padStart(2,"0")} / ${events.length}`;els.progress.style.width=`${(state.index+1)/events.length*100}%`;
+      ["study","courage","bond","clue"].forEach(k=>els[k].textContent=state[k]);
+      setScene(ev.image);els.time.textContent=ev.time;els.title.textContent=ev.title;els.text.textContent=ev.beats[state.beat];els.choices.innerHTML="";
+      els.dots.innerHTML=ev.beats.map((_,i)=>`<i class="${i<=state.beat?"on":""}"></i>`).join("");
+      const last=state.beat===ev.beats.length-1;
+      els.next.classList.toggle("hidden",last);
+      els.choices.classList.toggle("hidden",!last);
+      els.back.disabled=state.beat===0&&state.history.length===0;
+      if(last)ev.choices.forEach((c,i)=>{
+        const btn=document.createElement("button");btn.className="choice";btn.style.animationDelay=`${i*.05}s`;btn.textContent=c.text;
+        if(c.need&&!state.flags.has(c.need)){btn.disabled=true;btn.textContent+=`（缺少前置线索）`;}
+        btn.addEventListener("click",()=>choose(c));els.choices.appendChild(btn);
+      });
+      els.story.scrollTop=0;
+      if(events[state.index+1]){const pre=new Image();pre.src=events[state.index+1].image;}
+    }
+    function choose(c){
+      state.history.push({index:state.index,beat:state.beat,study:state.study,courage:state.courage,bond:state.bond,clue:state.clue,flags:[...state.flags]});
+      Object.entries(c.e||{}).forEach(([k,v])=>state[k]=clamp(state[k]+v));
+      if(c.flag)state.flags.add(c.flag);
+      toast(effectText(c.e||{}));
+      if(navigator.vibrate)navigator.vibrate(18);
+      setTimeout(()=>{state.index++;state.beat=0;state.index>=events.length?finish():render();},340);
+    }
+    function goBack(){
+      if(state.beat>0){state.beat--;render();return;}
+      const prev=state.history.pop();if(!prev)return;
+      state.index=prev.index;state.beat=prev.beat;state.study=prev.study;state.courage=prev.courage;state.bond=prev.bond;state.clue=prev.clue;state.flags=new Set(prev.flags);
+      toast("命运已回溯");render();
+    }
+    function finish(){
+      const f=state.flags;let ending;
+      const hidden=f.has("callPromise")&&f.has("answered")&&f.has("herChoice")&&f.has("memoryCard")&&f.has("freeChoice")&&state.bond>=78&&state.clue>=65&&state.courage>=62;
+      if(hidden){ending={title:"原来你也记得",text:"手续被暂缓，债务骗局也终于进入调查。清晨的站台上，林晚忽然叫住你。\n\n『上一次，我也打过那通电话。』\n\n她说出了一个只有前世的你才知道的日期。你终于明白，这三十天里并不是只有你在拯救她——她也一直在等机会，改变你的命运。"};}
+      else if(state.bond>=68&&state.clue>=55&&state.courage>=56&&(f.has("meeting")||f.has("safeEvidence")||f.has("motherPlan"))){ending={title:"改变的夏天",text:"转学申请最终被撤回。学校提供了临时帮助，母亲也决定让林晚完成高考。盛夏结束时，你们在录取通知书背面写下同一座城市的名字。\n\n命运没有被奇迹打败，而是被你们一次次没有退缩的选择改变。"};}
+      else if((state.clue>=48&&state.courage<52)||(!f.has("answered")&&state.clue>=52)){ending={title:"迟到的勇气",text:"你拼出了事情的全貌，却在最重要的时刻犹豫了。赶到南站时，列车已经离开。长椅上只剩她托人留下的一封信：\n\n『谢谢你让我知道，我不是没人记得。』"};}
+      else if(state.bond>=44||f.has("letter")){ending={title:"保持联系",text:"你没能改变她离开的决定，却终于接住了那通电话。此后的每个月，你们都会交换一封信。\n\n几年后，你在另一座城市的大学门口再次见到她。这一次，你们都没有从彼此的人生里消失。"};}
+      else{ending={title:"一切照旧",text:"她还是在那个夜晚离开了。你知道得比前世更多，却依然没有真正走进她的世界。\n\n手机里，那通未接来电安静地停在那里。时间能够重来，但逃避不会自动变成勇气。"};}
+      $("endingTitle").textContent=ending.title;$("endingText").textContent=ending.text;
+      $("resultStats").innerHTML=[["学业",state.study],["勇气",state.courage],["羁绊",state.bond],["线索",state.clue]].map(([a,b])=>`<div>${a}<b>${b}</b></div>`).join("");
+      show(els.ending);document.querySelector(".scene").style.filter=hidden?"saturate(1.15) brightness(1.08)":"saturate(.82)";
+    }
+    $("startButton").addEventListener("click",startGame);
+    els.next.addEventListener("click",()=>{state.beat++;render();});
+    els.back.addEventListener("click",goBack);
+    $("restartButton").addEventListener("click",()=>{document.querySelector(".scene").style.filter="";startGame();});
+    $("homeButton").addEventListener("click",()=>{els.scene.style.filter="";setScene("assets/cover.webp");show(els.start);});
+  </script>
+</body>
+</html>
